@@ -215,8 +215,6 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         addressDTORequest.setPostcode(faker.address().zipCode());
         addressDTORequest.setCountry(faker.address().country());
 
-        printHeader(restaurantPostCode);
-
         post(
             Service.ADDRESS,
             new String[] { "forUser", userId.toString() },

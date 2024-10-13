@@ -1,6 +1,5 @@
 package com.csci318.client.demo.Functionality;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class EventDemonstrator extends MujikiDemonstrator {
         }
 
         while (true) {
-            final int EVENT_COUNT = 6;
+            final int EVENT_COUNT = 10;
 
             switch (faker.random().nextInt(1, EVENT_COUNT)) {
                 case 1:
@@ -74,6 +73,7 @@ public class EventDemonstrator extends MujikiDemonstrator {
                 break;
                 case 2:
                 case 3:
+                case 4:
                 {
                     printHeader("EVENT 2 - Add random order");
 
@@ -82,10 +82,10 @@ public class EventDemonstrator extends MujikiDemonstrator {
 
                     try {
 
-                        int totalItems = randomIndex() + 1;
+                        int totalItems = randomIndex() / 2 + 1;
                         for (int i = 0; i < totalItems; ++i) {
                             int itemIndex = MAGIC_NUMBER * restaurantIndex + randomIndex();
-                            int itemCount = randomIndex() + 1;
+                            int itemCount = randomIndex() / 2 / totalItems + 1;
 
                             for (int j = 0; j < itemCount; ++j) {
                                 CartItemDTORequest cartItemDTORequest = new CartItemDTORequest();
@@ -131,9 +131,12 @@ public class EventDemonstrator extends MujikiDemonstrator {
                     }
                 }
                 break;
-                case 4:
                 case 5:
                 case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
                     printHeader("EVENT 3 - Change random order status");
 
                     if (orders.isEmpty()) {
@@ -143,7 +146,7 @@ public class EventDemonstrator extends MujikiDemonstrator {
                     Entry<UUID, OrderStatus> randomOrder = orders.entrySet().iterator().next();
 
                     // ~MAGIC_NUMBER% chance of cancellation.
-                    if (faker.random().nextInt(0, 100) < MAGIC_NUMBER) {
+                    if (faker.random().nextInt(0, 1000) < MAGIC_NUMBER) {
                         // Cancel the order
                         randomOrder.setValue(OrderStatus.CANCELLED);
                     } else {
