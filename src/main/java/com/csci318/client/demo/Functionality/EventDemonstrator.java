@@ -163,7 +163,7 @@ public class EventDemonstrator extends MujikiDemonstrator {
 
                     post(
                         Service.ORDER,
-                        new String[] { randomOrder.getKey().toString(), "update-order-status" },
+                        new String[] { randomOrder.getKey().toString(), "status" },
                         query,
                         null
                     );

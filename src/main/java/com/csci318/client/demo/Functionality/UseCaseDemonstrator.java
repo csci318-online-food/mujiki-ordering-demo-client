@@ -445,7 +445,7 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
 
         orderId = post(
             Service.ORDER,
-            new String[] { orderId.toString(), "update-order-status" },
+            new String[] { orderId.toString(), "status" },
             query,
             null
         );
