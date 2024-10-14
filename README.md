@@ -21,7 +21,7 @@ mvnw.cmd package
 
 The resulting binary will be stored at `target/demo-0.0.1-SNAPSHOT.jar`.
 
-## Demonstration Mode
+## Use Case Demonstration Mode
 
 Executing the binary with the `--use-cases` switch will launch the client in use cases demonstration
 mode.
@@ -35,6 +35,8 @@ Or, on Windows:
 ```cmd
 java -jar target\demo-0.0.1-SNAPSHOT.jar --use-cases
 ```
+
+Alternatively, the `run_use_cases` script can be used.
 
 In this mode, the client will try out all implemented use cases of Mujiki, printing out the
 sample URLs, requset bodies, and responses.
@@ -52,6 +54,8 @@ Or, on Windows:
 ```cmd
 java -jar target\demo-0.0.1-SNAPSHOT.jar
 ```
+
+Alternatively, the `run_events` script can be used.
 
 In this mode, the mock client regularly sends requests from a pool of users and restaurants to
 complete processes that eventually lead to Feedback and Order events to be fired.
