@@ -14,6 +14,7 @@ import com.csci318.client.demo.DTOs.CartDTORequest;
 import com.csci318.client.demo.DTOs.CartItemDTORequest;
 import com.csci318.client.demo.DTOs.FeedbackDTORequest;
 import com.csci318.client.demo.DTOs.ItemDTORequest;
+import com.csci318.client.demo.DTOs.LoyaltyDTORequest;
 import com.csci318.client.demo.DTOs.PaymentDTORequest;
 import com.csci318.client.demo.DTOs.PromotionDTORequest;
 import com.csci318.client.demo.DTOs.RestaurantDTORequest;
@@ -26,6 +27,7 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
 
     private UUID cartId;
     private UUID itemId;
+    private UUID loyaltyId;
     private UUID orderId;
     private UUID paymentId;
     private UUID promotionId;
@@ -68,6 +70,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         useCase9_AddPaymentMethod();
         useCase9_1_ViewPaymentMethods();
 
+        useCase13_0_EnrollInLoyaltyProgram();
+
         useCase10_0_CreateCartForUser();
         useCase10_AddItemToCart();
 
@@ -75,9 +79,11 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
 
         useCase12_UpdateOrderStatus();
 
-        useCase13_GetRestaurantCountsByRatings();
+        useCase13_GetLoyaltyStatus();
 
-        useCase14_GetOrderStatusesByRestaurants();
+        useCase14_GetRestaurantCountsByRatings();
+
+        useCase15_GetOrderStatusesByRestaurants();
     }
 
     // USE CASE 1 - Users
@@ -106,18 +112,25 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             userDTORequest
         );
+
+        pause();
+
     }
 
     private void useCase1_1_ViewUsers() {
         printHeader("Use Case 1.1 - View Users");
 
         userId = get(Service.USER, null, null);
+
+        pause();
     }
 
     private void useCase1_2_FindUserByUsername() {
         printHeader("Use Case 1.2 - Find User by Username");
 
         userId = get(Service.USER, new String[] { userName }, null);
+
+        pause();
     }
 
     // USE CASE 2 - Restaurants
@@ -157,12 +170,16 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             restaurantDTORequest
         );
+
+        pause();
     }
 
     private void useCase2_1_ViewRestaurants() {
         printHeader("Use Case 2.1 - View Restaurants");
 
         get(Service.RESTAURANT, null, null);
+
+        pause();
     }
 
     private void useCase2_2_UpdateRestaurant() {
@@ -200,6 +217,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             restaurantDTORequest
         );
+
+        pause();
     }
 
     // USE CASE 3 - User Address
@@ -221,6 +240,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             addressDTORequest
         );
+
+        pause();
     }
 
     private void useCase3_1_FindAddressForUser()
@@ -228,6 +249,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         printHeader("Use Case 3.1 - Find Address for User");
 
         get(Service.ADDRESS, new String[] { "forUser", userId.toString() }, null);
+
+        pause();
     }
 
     // USE CASE 4 - Restaurant Address
@@ -251,6 +274,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             addressDTORequest
         );
+
+        pause();
     }
 
     private void useCase4_1_FindAddressForUser()
@@ -258,6 +283,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         printHeader("Use Case 4.1 - Find Address for Restaurant");
 
         get(Service.ADDRESS, new String[] { "forRestaurant", restaurantId.toString() }, null);
+
+        pause();
     }
 
     // USE CASE 5 - Restaurant Complex Query
@@ -279,6 +306,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             new String[] { "search" },
             query
         );
+
+        pause();
     }
 
     // USE CASE 6 - Restaurant Items
@@ -302,6 +331,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             query,
             itemDTORequest
         );
+
+        pause();
     }
 
     // USE CASE 7 - Promotion
@@ -327,6 +358,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             promotionDTORequest
         );
+
+        pause();
     }
 
     private void useCase7_1_GetPromotion()
@@ -334,6 +367,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         printHeader("Use Case 7.1 - Get Promotion");
 
         promotionId = get(Service.PROMOTION, new String[] { promotionId.toString() }, null);
+
+        pause();
     }
 
     private void useCase7_2_GetPromotionByRestaurant()
@@ -345,6 +380,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             new String[] { "restaurant", restaurantId.toString() },
             null
         );
+
+        pause();
     }
 
     // USE CASE 8 - Feedback
@@ -365,6 +402,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             feedbackDTORequest
         );
+
+        pause();
     }
 
     // USE CASE 9 - Payment
@@ -379,6 +418,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         paymentDTORequest.setCardNumber(faker.business().creditCardNumber());
 
         paymentId = post(Service.PAYMENT, null, null, paymentDTORequest);
+
+        pause();
     }
 
     private void useCase9_1_ViewPaymentMethods()
@@ -386,6 +427,23 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         printHeader("Use Case 9.1 - View Payment Methods");
 
         paymentId = get(Service.PAYMENT, new String[] { "user", userId.toString() }, null);
+
+        pause();
+    }
+
+    // Preparation for Use Case 13 below.
+    // Must be enrolled in loyalty program then make an order for a meaningful status to display.
+
+    private void useCase13_0_EnrollInLoyaltyProgram()
+    {
+        printHeader("Use Case 13.0 - Enroll in Loyalty Program");
+
+        LoyaltyDTORequest loyaltyDTORequest = new LoyaltyDTORequest();
+        loyaltyDTORequest.setUserId(userId);
+
+        loyaltyId = post(Service.LOYALTY, new String[] { "enroll" }, null, loyaltyDTORequest);
+
+        pause();
     }
 
     // USE CASE 10 - Cart
@@ -398,6 +456,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         cartDTORequest.setUserId(userId);
 
         cartId = post(Service.CART, null, null, cartDTORequest);
+
+        pause();
     }
 
     private void useCase10_AddItemToCart()
@@ -414,6 +474,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             null,
             cartItemDTORequest
         );
+
+        pause();
     }
 
     // USE CASE 11 - Pay
@@ -432,6 +494,8 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             query,
             null
         );
+
+        pause();
     }
 
     // USE CASE 12 - Order
@@ -441,7 +505,7 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
         printHeader("Use Case 12 - Update Order Status");
 
         HashMap<String, Object> query = new HashMap<>();
-        query.put("orderStatus", OrderStatus.IN_PROGRESS);
+        query.put("orderStatus", OrderStatus.COMPLETED);
 
         orderId = post(
             Service.ORDER,
@@ -449,23 +513,45 @@ public class UseCaseDemonstrator extends MujikiDemonstrator {
             query,
             null
         );
+
+        pause();
     }
 
-    // USE CASE 13 - Real-time Ratings Query
+    // USE CASE 13 - Get Loyalty Status
 
-    private void useCase13_GetRestaurantCountsByRatings()
+    private void useCase13_GetLoyaltyStatus()
     {
-        printHeader("Use Case 13 - Get Restaurant Counts by Ratings");
+        printHeader("Use Case 13 - Get Loyalty Status");
+
+        loyaltyId = get(Service.LOYALTY, new String[] { loyaltyId.toString() }, null);
+
+        pause();
+    }
+
+    // USE CASE 14 - Real-time Ratings Query
+
+    private void useCase14_GetRestaurantCountsByRatings()
+    {
+        printHeader("Use Case 14 - Get Restaurant Counts by Ratings");
 
         get(Service.ANALYTICS, new String[] { "ratings" }, null);
+
+        pause();
     }
 
-    // USE CASE 14 - Real-time Order Status Query
+    // USE CASE 15 - Real-time Order Status Query
 
-    private void useCase14_GetOrderStatusesByRestaurants()
+    private void useCase15_GetOrderStatusesByRestaurants()
     {
-        printHeader("Use Case 14 - Get Order Statuses by Restaurants");
+        printHeader("Use Case 15 - Get Order Statuses by Restaurants");
 
         get(Service.ANALYTICS, new String[] { "orders" }, null);
+
+        pause();
+    }
+
+    private void pause() {
+        System.console().printf("Press Enter to continue...");
+        System.console().readLine();
     }
 }

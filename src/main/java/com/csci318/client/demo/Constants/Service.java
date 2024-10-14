@@ -3,6 +3,7 @@ package com.csci318.client.demo.Constants;
 public enum Service {
     AUTHENTICATION(8080, "auth"),
     USER(8081, "user"),
+    LOYALTY(8081, "loyalty"),
     RESTAURANT(8082, "restaurant"),
     ITEM(8082, "item"),
     PROMOTION(8082, "promotion"),
