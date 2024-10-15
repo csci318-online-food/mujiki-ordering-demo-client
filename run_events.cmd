@@ -3,6 +3,11 @@
 setlocal
 set VERSION=0.0.1-SNAPSHOT
 
-mvnw.cmd package
-java -jar target/demo-%VERSION%.jar --events
+pushd %~dp0
+
+call mvnw.cmd package
+%JAVA_HOME%\bin\java.exe -jar target\demo-%VERSION%.jar --events
+
+popd
+
 endlocal
